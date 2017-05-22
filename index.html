@@ -16,16 +16,22 @@
 	<!-- link to custom stylesheet-->
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <!-- link to annoying Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Tangerine|VT323" rel="stylesheet">
+
 </head>
 <body>
 
 	<!-- Container for whole game page -->
-	<main class="container-fluid">
+	<main class="container">
 
 		<!-- Game title and heading -->
 		<header class= "row text-center">
-			Badly Drawn Royalty Battle RPG
-			<div class="row text-center">
+			<span class="font-40-px font-comicsans">Badly Drawn </span>
+			<span class="font-40-px font-handwriting">Fairy Tale </span>
+			<span class="font-40-px font-bold font-impact font-wt-bold">Battle </span>
+			<span class="font-40-px font-pixels">RPG </span>
+			<div class="font-24-px font-handwriting row text-center">
 			&#9835;&#9834;Some day my graphic designer will come...
 			</div>
 		</header>
@@ -33,30 +39,36 @@
 		<!-- Container for fighter profiles-->
 		<section class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 			
-			<header class="row text-center">
-				CLICK "DETAILS" TO SEE EACH FIGHTER'S STATS. CLICK ON THEIR PHOTO TO SELECT.
+			<header class="row text-center" id="lefthand-header">
+				SELECT YOUR FIGHTER
 			</header>
 
 			
-			<div class="row" id="fighters-container"></div>
+			<div class="row text-center" id="fighters-container"></div>
 
 			
 		</section> 
 
 		<!-- Container for Battle Arena -->
-		<section class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+		<section class="bg-red col-xs-12 col-sm-6 col-md-6 col-md-offset-1 col-lg-6 col-lg-offset-1">
 
-			<header class="row text-center">DEFENDER ARENA</header>
+			<header class="row text-center">BATTLE ARENA</header>
 
 			<!-- Container for user-selected fighter profile-->
-			<div class="row" id="user-container"></div>
+			<div class="text-center">	
+				<div class="row bg-blue" id="user-container"></div>
+				<div class="row">YOU &uarr;</div>
+			</div>
 			
 			<div class="row">
-				<button type="button" class="btn btn-primary" id="attack-btn">ATTACK!</button>
+				<button type="button" class="btn btn-primary center-block" id="attack-btn">ATTACK!</button>
 			</div>
 
 			<!-- Container for opponent profile -->
-			<div class="row" id="opponent-container"></div>
+			<div class="text-center">	
+				<div class="row">YOUR OPPONENT &darr;</div>
+				<div class="row bg-yellow" id="opponent-container"></div>
+			</div>
 
 		</section>
 
@@ -65,7 +77,11 @@
 <script type="text/javascript">
 
 
-	loadFightersSection();
+	//display the roster of potential fighters in the fighters-container div
+			for (i = 0; i < fightersArray.length; i++){
+				var fighterRosterDisplayDiv = $("#fighters-container");
+				loadFighterProfile(i, fighterRosterDisplayDiv, "null");
+			}
 
 	//declare variables to keep track of user's stats
 	var userSelectionId = null;
@@ -79,21 +95,25 @@
 	var opponentFighter = null;
 	var opponentHPValue = null;
 	var opponentCounterattackValue = null;
+	var opponentsToBeatNumber = fightersArray.length;
 
 	$(".JS-fighter-picture").on("click", function() {
 		if(userSelectionId == null){
 			
 			//Set the user's baseline fighter stats based on their selection
-			userSelectionId = $(this).attr("value");
+			userSelectionId = parseInt($(this).attr("value"));
 			userFighter = fightersArray[userSelectionId];
 			userHPValue = userFighter.healthPoints;
 			userAttackValue = userFighter.attackPower;
 			userAttackValueRaise = userFighter.attackPower;
 
+			//Delete the user's selection from the roster and load it to the Battle Arena
+			$(this).closest(".fighter-profile").remove();
 			displayContainerUserSelection = $("#user-container");
+			loadFighterProfile(userSelectionId, displayContainerUserSelection, "user");
+			opponentsToBeatNumber = opponentsToBeatNumber - 1;
+			$("#lefthand-header").html("SELECT YOUR OPPONENT");
 
-			//display the user's selection in the User section of the Defender Arena 
-			loadUserSelection(userSelectionId, displayContainerUserSelection);
 		}
 
 		else if (userSelectionId !== null && opponentId == null){
@@ -106,17 +126,46 @@
 
 			displayContainerOpponentSelection = $("#opponent-container");
 
-			//display the user's selected opponent in the opponent section of the Defender Arena 
-			loadUserSelection(opponentId, displayContainerOpponentSelection);
+			//remove user's selected opponent from the roster sections and display them in the Battle Arena
+			$(this).closest(".fighter-profile").remove();
+			loadFighterProfile(opponentId, displayContainerOpponentSelection, "opponent");
 		}
 	});
 
 	$("#attack-btn").on("click", function(){
 		if(opponentHPValue > 0){
-			console.log("Opponent HP:" + opponentHPValue);
+			//change user's HP/Attack and opponent's HP, print user/opponent stats to the Battle Arena.
 			opponentHPValue = opponentHPValue - userAttackValue;
+			userHPValue = userHPValue - opponentCounterattackValue;
 			userAttackValue = userAttackValue + userAttackValueRaise;
-			console.log("Opponent HP:" + opponentHPValue);
+			$("#opponent.JS-stats-HP").html("HP: " + opponentHPValue);
+			$("#user.JS-stats-HP").html("HP: " + userHPValue);
+			$("#user.JS-stats-attack").html("Attack: " + userAttackValue);
+
+			//if this last attack has zeroed the opponent's HP, clear them from the Battle Arena and null all the opponent stats
+			if (opponentHPValue <= 0){
+				$("#opponent-container").html(" ");
+				opponentsToBeatNumber = opponentsToBeatNumber - 1;
+				console.log(opponentsToBeatNumber);
+				opponentId = null;
+				opponentFighter = null;
+				opponentHPValue = null;
+				opponentCounterattackValue = null;
+					if(opponentsToBeatNumber == 0){
+						$("#opponent-container").html("YAY, YOU WON!<br>TRY AGAIN?");
+					}
+			}
+
+			//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena and null all the user stats
+			if (userHPValue <= 0){
+				$("#user-container").html("OOPS. YOU LOST!<br>TRY AGAIN.");
+				userSelectionId = null;
+				userFighter = null;
+				userHPValue = null;
+				userAttackValueRaise = null;
+				userAttackValue = null;
+				$("#attack-btn").addClass("disabled");
+			}
 		}
 
 	});

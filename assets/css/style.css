@@ -1,0 +1,39 @@
+.bg-blue{
+	background-color: #3E84F3;
+}
+
+.bg-red{
+	background-color: #E63125;
+}
+
+.bg-yellow{
+	background-color: #FBBE04;
+}
+
+.font-24-px{
+	font-size: 24px;
+}
+
+.font-40-px{
+	font-size: 40px;
+}
+
+.font-comicsans {
+	font-family:"Comic Sans MS", cursive, sans-serif;
+}
+
+.font-handwriting{
+	font-family: 'Tangerine', cursive;
+}
+
+.font-impact{
+	font-family: Impact, Charcoal, sans-serif;
+}
+
+.font-pixels{
+	font-family: 'VT323', monospace;
+}
+
+.font-wt-bold{
+	font-size: bold;
+}
