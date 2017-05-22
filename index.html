@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery RPG</title>
+
+    <!-- link to the jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+
+	<!-- link to this game's custom JS code -->
+    <script src="assets/javascript/game.js"></script>
+
+    <!-- link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- link to custom stylesheet-->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body>
+
+	<!-- Container for whole game page -->
+	<main class="container-fluid">
+
+		<!-- Game title and heading -->
+		<header class= "row text-center">
+			Badly Drawn Royalty Battle RPG
+			<div class="row text-center">
+			&#9835;&#9834;Some day my graphic designer will come...
+			</div>
+		</header>
+
+		<!-- Container for fighter profiles-->
+		<section class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+			
+			<header class="row text-center">
+				CLICK "DETAILS" TO SEE EACH FIGHTER'S STATS. CLICK ON THEIR PHOTO TO SELECT.
+			</header>
+
+			
+			<div class="row" id="fighters-container"></div>
+
+			
+		</section> 
+
+		<!-- Container for Battle Arena -->
+		<section class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+
+			<header class="row text-center">DEFENDER ARENA</header>
+
+			<!-- Container for user-selected fighter profile-->
+			<div class="row" id="user-container"></div>
+			
+			<div class="row">
+				<button type="button" class="btn btn-primary" id="attack-btn">ATTACK!</button>
+			</div>
+
+			<!-- Container for opponent profile -->
+			<div class="row" id="opponent-container"></div>
+
+		</section>
+
+	</main>
+
+<script type="text/javascript">
+
+
+	loadFightersSection();
+
+	//declare variables to keep track of user's stats
+	var userSelectionId = null;
+	var userFighter = null;
+	var userHPValue = null;
+	var userAttackValueRaise = null;
+	var userAttackValue = null;
+
+	//declare variables to keep track of current opponent stats
+	var opponentId = null;
+	var opponentFighter = null;
+	var opponentHPValue = null;
+	var opponentCounterattackValue = null;
+
+	$(".JS-fighter-picture").on("click", function() {
+		if(userSelectionId == null){
+			
+			//Set the user's baseline fighter stats based on their selection
+			userSelectionId = $(this).attr("value");
+			userFighter = fightersArray[userSelectionId];
+			userHPValue = userFighter.healthPoints;
+			userAttackValue = userFighter.attackPower;
+			userAttackValueRaise = userFighter.attackPower;
+
+			displayContainerUserSelection = $("#user-container");
+
+			//display the user's selection in the User section of the Defender Arena 
+			loadUserSelection(userSelectionId, displayContainerUserSelection);
+		}
+
+		else if (userSelectionId !== null && opponentId == null){
+			
+			//Set the opponent's baseline fighter stats
+			opponentId = $(this).attr("value");
+			opponentFighter = fightersArray[opponentId];
+			opponentHPValue = opponentFighter.healthPoints;
+			opponentCounterattackValue = opponentFighter.counterattackPower;
+
+			displayContainerOpponentSelection = $("#opponent-container");
+
+			//display the user's selected opponent in the opponent section of the Defender Arena 
+			loadUserSelection(opponentId, displayContainerOpponentSelection);
+		}
+	});
+
+	$("#attack-btn").on("click", function(){
+		if(opponentHPValue > 0){
+			console.log("Opponent HP:" + opponentHPValue);
+			opponentHPValue = opponentHPValue - userAttackValue;
+			userAttackValue = userAttackValue + userAttackValueRaise;
+			console.log("Opponent HP:" + opponentHPValue);
+		}
+
+	});
+
+</script>
+
+</body>
+</html>
