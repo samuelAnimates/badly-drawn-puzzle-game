@@ -60,8 +60,9 @@
 				<div class="row">YOU &uarr;</div>
 			</div>
 			
-			<div class="row">
+			<div class="row" id="buttons-row">
 				<button type="button" class="btn btn-primary center-block" id="attack-btn">ATTACK!</button>
+				<button type='button' class='btn btn-success center-block' id='reset-btn'>PLAY AGAIN</button>
 			</div>
 
 			<!-- Container for opponent profile -->
@@ -78,10 +79,10 @@
 
 
 	//display the roster of potential fighters in the fighters-container div
-			for (i = 0; i < fightersArray.length; i++){
-				var fighterRosterDisplayDiv = $("#fighters-container");
-				loadFighterProfile(i, fighterRosterDisplayDiv, "null");
-			}
+	for (i = 0; i < fightersArray.length; i++){
+		var fighterRosterDisplayDiv = $("#fighters-container");
+		loadFighterProfile(i, fighterRosterDisplayDiv, "null");
+	}
 
 	//declare variables to keep track of user's stats
 	var userSelectionId = null;
@@ -97,8 +98,11 @@
 	var opponentCounterattackValue = null;
 	var opponentsToBeatNumber = fightersArray.length;
 
-	$(".JS-fighter-picture").on("click", function() {
-		if(userSelectionId == null){
+	$("#reset-btn").hide();
+
+	$("#fighters-container").on("click", ".JS-fighter-picture", function() {
+
+		if(userSelectionId == null && opponentId == null){
 			
 			//Set the user's baseline fighter stats based on their selection
 			userSelectionId = parseInt($(this).attr("value"));
@@ -130,6 +134,7 @@
 			$(this).closest(".fighter-profile").remove();
 			loadFighterProfile(opponentId, displayContainerOpponentSelection, "opponent");
 		}
+		
 	});
 
 	$("#attack-btn").on("click", function(){
@@ -146,27 +151,43 @@
 			if (opponentHPValue <= 0){
 				$("#opponent-container").html(" ");
 				opponentsToBeatNumber = opponentsToBeatNumber - 1;
-				console.log(opponentsToBeatNumber);
-				opponentId = null;
-				opponentFighter = null;
-				opponentHPValue = null;
-				opponentCounterattackValue = null;
+				nullOpponent();
+					//If there are no opponents left to beat, display message and disable attack button.
 					if(opponentsToBeatNumber == 0){
+						$("#attack-btn").addClass("disabled");
+						$("#reset-btn").show();
 						$("#opponent-container").html("YAY, YOU WON!<br>TRY AGAIN?");
 					}
 			}
 
-			//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena and null all the user stats
+			//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena, display message, and disable attack button.
 			if (userHPValue <= 0){
 				$("#user-container").html("OOPS. YOU LOST!<br>TRY AGAIN.");
-				userSelectionId = null;
-				userFighter = null;
-				userHPValue = null;
-				userAttackValueRaise = null;
-				userAttackValue = null;
 				$("#attack-btn").addClass("disabled");
+				$("#reset-btn").show();
 			}
 		}
+
+	});
+
+	$("#reset-btn").on("click", function() {
+		
+		$("#fighters-container").html("");
+		$("#opponent-container").html("");
+		$("#user-container").html("");
+		$("#reset-btn").hide();
+		$("#attack-btn").removeClass("disabled");
+		
+		
+		for (i = 0; i < fightersArray.length; i++){
+			var fighterRosterDisplayDiv = $("#fighters-container");
+			loadFighterProfile(i, fighterRosterDisplayDiv, "null");
+		};
+
+		nullUser();
+		nullOpponent();
+		var opponentsToBeatNumber = fightersArray.length;
+		
 
 	});
 

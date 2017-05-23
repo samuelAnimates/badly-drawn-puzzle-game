@@ -4,7 +4,7 @@ var fighterOne = {
 	healthPoints: 100,
 	attackPower: 10,
 	counterattackPower: 10,
-	fighterPicture: "http://www.lorempixel.com/150/150/abstract"
+	fighterPicture: "./assets/images/princessPoison.png"
 };
 
 var fighterTwo = {
@@ -13,7 +13,7 @@ var fighterTwo = {
 	healthPoints: 120,
 	attackPower: 20,
 	counterattackPower: 20,
-	fighterPicture: "http://www.lorempixel.com/150/150/people"
+	fighterPicture: "./assets/images/dukeDynamite.png"
 };
 
 var fighterThree = {
@@ -22,7 +22,7 @@ var fighterThree = {
 	healthPoints: 140,
 	attackPower: 30,
 	counterattackPower: 30,
-	fighterPicture: "http://www.lorempixel.com/150/150/food"
+	fighterPicture: "./assets/images/lordLaserEyes.png"
 };
 
 var fighterFour = {
@@ -31,7 +31,7 @@ var fighterFour = {
 	healthPoints: 180,
 	attackPower: 40,
 	counterattackPower: 40,
-	fighterPicture: "http://www.lorempixel.com/150/150/city"
+	fighterPicture: "./assets/images/empressElectricShock.png"
 };
 
 //set array of fighter options
@@ -79,4 +79,19 @@ function loadFighterProfile(fighterIdNumber, webpageTargetDiv, teamName){
 		fighterDetails.append(fighterDetailsAttack);
 		fighterProfile.append(fighterDetails);
 		$(webpageTargetDiv).append(fighterProfile);
+};
+
+function nullUser(){
+	userSelectionId = null;
+	userFighter = null;
+	userHPValue = null;
+	userAttackValueRaise = null;
+	userAttackValue = null;
+};
+
+function nullOpponent(){
+	opponentId = null;
+	opponentFighter = null;
+	opponentHPValue = null;
+	opponentCounterattackValue = null;
 };
