@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>jQuery RPG</title>
+    <title>jQuery BATTLE RPG</title>
 
     <!-- link to the jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
@@ -152,6 +152,7 @@
 				$("#opponent-container").html(" ");
 				opponentsToBeatNumber = opponentsToBeatNumber - 1;
 				nullOpponent();
+				console.log("Opponents left: " + opponentsToBeatNumber);
 					//If there are no opponents left to beat, display message and disable attack button.
 					if(opponentsToBeatNumber == 0){
 						$("#attack-btn").addClass("disabled");
@@ -186,7 +187,7 @@
 
 		nullUser();
 		nullOpponent();
-		var opponentsToBeatNumber = fightersArray.length;
+		opponentsToBeatNumber = fightersArray.length;
 		
 
 	});
