@@ -9,12 +9,16 @@
 
 	<!-- link to this game's custom JS code -->
     <script src="assets/javascript/game.js"></script>
+	
 
     <!-- link to Bootstrap-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 	<!-- link to custom stylesheet-->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- link to css rest -->
+    <link rel="stylesheet" href="assets/css/rest.css">
 
     <!-- link to annoying Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Tangerine|VT323" rel="stylesheet">
@@ -39,8 +43,8 @@
 		<!-- Container for fighter profiles-->
 		<section class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 			
-			<header class="row text-center" id="lefthand-header">
-				SELECT YOUR FIGHTER
+			<header class="bg-black color-white row text-center" id="lefthand-header">
+				STEP 1: SELECT YOUR FIGHTER
 			</header>
 
 			
@@ -116,7 +120,7 @@
 			displayContainerUserSelection = $("#user-container");
 			loadFighterProfile(userSelectionId, displayContainerUserSelection, "user");
 			opponentsToBeatNumber = opponentsToBeatNumber - 1;
-			$("#lefthand-header").html("SELECT YOUR OPPONENT");
+			$("#lefthand-header").html("NOW: SELECT YOUR OPPONENT");
 
 		}
 
@@ -133,6 +137,8 @@
 			//remove user's selected opponent from the roster sections and display them in the Battle Arena
 			$(this).closest(".fighter-profile").remove();
 			loadFighterProfile(opponentId, displayContainerOpponentSelection, "opponent");
+
+			$("#lefthand-header").html("NOW: FIGHT!");
 		}
 		
 	});

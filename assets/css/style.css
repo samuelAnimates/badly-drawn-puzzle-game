@@ -1,3 +1,7 @@
+.bg-black{
+	background-color: black;
+}
+
 .bg-blue{
 	background-color: #3E84F3;
 }
@@ -8,6 +12,10 @@
 
 .bg-yellow{
 	background-color: #FBBE04;
+}
+
+.color-white{
+	color: white;
 }
 
 .font-24-px{
