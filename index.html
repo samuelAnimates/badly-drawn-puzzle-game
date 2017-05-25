@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>jQuery BATTLE RPG</title>
@@ -24,6 +25,7 @@
     <link href="https://fonts.googleapis.com/css?family=Tangerine|VT323" rel="stylesheet">
 
 </head>
+
 <body>
 
 	<!-- Container for whole game page -->
@@ -70,6 +72,7 @@
 			</div>
 			
 			<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 pad-10px row" id="buttons-row">
+				<span class="color-white pull-left" id="wins-span">W: 0</span><span class="color-white pull-right" id="losses-span">L: 0</span>
 				<button type="button" class="btn btn-primary center-block font-comicsans" id="attack-btn">ATTACK!</button>
 				<button type="button" class="btn btn-success center-block font-comicsans" id="reset-btn">PLAY AGAIN</button>
 			</div>
@@ -101,6 +104,8 @@
 	var userHPValue = null;
 	var userAttackValueRaise = null;
 	var userAttackValue = null;
+	var lossesCounterNum = 0;
+	var winsCounterNum = 0;
 
 	//declare variables to keep track of current opponent stats
 	var opponentId = null;
@@ -176,9 +181,11 @@
 
 					//If there are no opponents left to beat, display message and disable attack button.
 					if(opponentsToBeatNumber == 0){
+						winsCounterNum++;
 						$("#attack-btn").addClass("disabled");
 						$("#reset-btn").show();
 						$("#JS-battle-arena-opponent-header").html("");
+						$("#wins-span").html("W: " + winsCounterNum);
 						$("#opponent-container").html("YAY, YOU WON!<br>TRY AGAIN?");
 					}
 			}
@@ -186,6 +193,8 @@
 			//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena, display message, and disable attack button.
 			if (userHPValue <= 0){
 				$("#JS-battle-arena-user-header").html("");
+				lossesCounterNum++;
+				$("#losses-span").html("L: " + winsCounterNum);
 				$("#user-container").html("OOPS. YOU LOST!<br>TRY AGAIN.");
 				$("#attack-btn").addClass("disabled");
 				$("#reset-btn").show();
@@ -207,4 +216,5 @@
 </script>
 
 </body>
+
 </html>
