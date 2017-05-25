@@ -30,20 +30,25 @@
 	<main class="container">
 
 		<!-- Game title and heading -->
-		<header class= "row text-center">
-			<span class="font-40-px font-comicsans">Badly Drawn </span>
-			<span class="font-40-px font-handwriting">Fairy Tale </span>
-			<span class="font-40-px font-bold font-impact font-wt-bold">Battle </span>
-			<span class="font-40-px font-pixels">RPG </span>
-			<div class="font-24-px font-handwriting row text-center">
-			&#9835;&#9834;Some day my graphic designer will come...
+		<header class= "bg-green margin-bottom-20px pad-10px row text-center">
+
+			<div class= "color-white row">
+				<span class="font-40-px font-comicsans">Badly Drawn </span>
+				<span class="font-40-px font-handwriting">Fairy Tale &nbsp;</span>
+				<span class="font-40-px font-bold font-impact font-wt-bold">Battle </span>
+				<span class="font-40-px font-pixels">RPG </span>
 			</div>
+
+			<div class="font-24-px font-handwriting row text-center">
+				&#9835;&#9834;Some day my graphic designer will come...
+			</div>
+
 		</header>
 
 		<!-- Container for fighter profiles-->
-		<section class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<section class="col-xs-12 col-s-12 col-md-4 col-lg-4">
 			
-			<header class="bg-black color-white row text-center" id="lefthand-header">
+			<header class="bg-black color-white row font-40-px font-comicsans text-center" id="lefthand-header">
 				STEP 1: SELECT YOUR FIGHTER
 			</header>
 
@@ -54,26 +59,28 @@
 		</section> 
 
 		<!-- Container for Battle Arena -->
-		<section class="bg-red col-xs-12 col-sm-6 col-md-6 col-md-offset-1 col-lg-6 col-lg-offset-1">
+		<section class="bg-red col-xs-12 col-s-12 col-sm-offset-1 col-md-6 col-md-offset-1 col-lg-6 col-lg-offset-1" id="battle-arena">
 
-			<header class="row text-center">BATTLE ARENA</header>
+			<header class="font-40-px font-comicsans pad-10px row text-center" id="righthand-header">BATTLE ARENA</header>
 
 			<!-- Container for user-selected fighter profile-->
-			<div class="text-center">	
+			<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 text-center" id="user-container-container">	
 				<div class="row bg-blue" id="user-container"></div>
-				<div class="row">YOU &uarr;</div>
+				<div class="bg-darkblue color-white row" id="JS-battle-arena-user-header">YOU &uarr;</div>
 			</div>
 			
-			<div class="row" id="buttons-row">
-				<button type="button" class="btn btn-primary center-block" id="attack-btn">ATTACK!</button>
-				<button type='button' class='btn btn-success center-block' id='reset-btn'>PLAY AGAIN</button>
+			<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 pad-10px row" id="buttons-row">
+				<button type="button" class="btn btn-primary center-block font-comicsans" id="attack-btn">ATTACK!</button>
+				<button type="button" class="btn btn-success center-block font-comicsans" id="reset-btn">PLAY AGAIN</button>
 			</div>
 
 			<!-- Container for opponent profile -->
-			<div class="text-center">	
-				<div class="row">YOUR OPPONENT &darr;</div>
-				<div class="row bg-yellow" id="opponent-container"></div>
+			<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 text-center" id="opponent-container-container">	
+				<div class="bg-darkyellow color-white row" id="JS-battle-arena-opponent-header">YOUR OPPONENT &darr;</div>
+				<div class="bg-yellow row" id="opponent-container"></div>
 			</div>
+
+			<header class="font-40-px font-comicsans pad-10px row text-center" id="righthand-header">BATTLE ARENA</header>
 
 		</section>
 
@@ -103,6 +110,10 @@
 	var opponentsToBeatNumber = fightersArray.length;
 
 	$("#reset-btn").hide();
+	$("#buttons-row").hide();
+	$("#user-container-container").hide();
+	$("#opponent-container-container").hide();
+	$("#battle-arena").hide();
 
 	$("#fighters-container").on("click", ".JS-fighter-picture", function() {
 
@@ -121,6 +132,8 @@
 			loadFighterProfile(userSelectionId, displayContainerUserSelection, "user");
 			opponentsToBeatNumber = opponentsToBeatNumber - 1;
 			$("#lefthand-header").html("NOW: SELECT YOUR OPPONENT");
+			$("#battle-arena").show();
+			$("#user-container-container").show();
 
 		}
 
@@ -137,8 +150,9 @@
 			//remove user's selected opponent from the roster sections and display them in the Battle Arena
 			$(this).closest(".fighter-profile").remove();
 			loadFighterProfile(opponentId, displayContainerOpponentSelection, "opponent");
-
+			$("#opponent-container-container").show();
 			$("#lefthand-header").html("NOW: FIGHT!");
+			$("#buttons-row").show();
 		}
 		
 	});
@@ -156,19 +170,22 @@
 			//if this last attack has zeroed the opponent's HP, clear them from the Battle Arena and null all the opponent stats
 			if (opponentHPValue <= 0){
 				$("#opponent-container").html(" ");
+				$("#lefthand-header").html("NOW: SELECT YOUR NEXT OPPONENT");
 				opponentsToBeatNumber = opponentsToBeatNumber - 1;
 				nullOpponent();
-				console.log("Opponents left: " + opponentsToBeatNumber);
+
 					//If there are no opponents left to beat, display message and disable attack button.
 					if(opponentsToBeatNumber == 0){
 						$("#attack-btn").addClass("disabled");
 						$("#reset-btn").show();
+						$("#JS-battle-arena-opponent-header").html("");
 						$("#opponent-container").html("YAY, YOU WON!<br>TRY AGAIN?");
 					}
 			}
 
 			//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena, display message, and disable attack button.
 			if (userHPValue <= 0){
+				$("#JS-battle-arena-user-header").html("");
 				$("#user-container").html("OOPS. YOU LOST!<br>TRY AGAIN.");
 				$("#attack-btn").addClass("disabled");
 				$("#reset-btn").show();
@@ -179,22 +196,11 @@
 
 	$("#reset-btn").on("click", function() {
 		
-		$("#fighters-container").html("");
-		$("#opponent-container").html("");
-		$("#user-container").html("");
-		$("#reset-btn").hide();
-		$("#attack-btn").removeClass("disabled");
-		
-		
-		for (i = 0; i < fightersArray.length; i++){
-			var fighterRosterDisplayDiv = $("#fighters-container");
-			loadFighterProfile(i, fighterRosterDisplayDiv, "null");
-		};
-
+		resetPage();
 		nullUser();
 		nullOpponent();
+
 		opponentsToBeatNumber = fightersArray.length;
-		
 
 	});
 

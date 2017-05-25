@@ -39,7 +39,7 @@ var fightersArray = [fighterOne, fighterTwo, fighterThree, fighterFour];
 
 
 /*JQuery-dependent function that takes in a fighter's ID number and a target div on the webpage, loading the corresponding fighter into the target div.
-It also assigns the fighter's image a team id: "user" "opponent" or "null"
+It also assigns the fighter's image a team id, in this case: "user" "opponent" or "null".
 */
 function loadFighterProfile(fighterIdNumber, webpageTargetDiv, teamName){
 		//Obtain fighter stats for user selection
@@ -66,7 +66,7 @@ function loadFighterProfile(fighterIdNumber, webpageTargetDiv, teamName){
 		fighterImageDiv.html("<img class='img-fluid JS-fighter-picture' src='" + fighterDetailsImageLink + "' value='" + currentFighter.idNumber + "'>");
 		fighterProfile.append(fighterImageDiv);
 
-		fighterDetailsName.html("Name: " + displayFighterName);
+		fighterDetailsName.html(displayFighterName);
 		fighterDetailsHP.html("HP: " + displayFighterHP);
 		fighterDetailsHP.addClass("JS-stats-HP");
 		fighterDetailsHP.attr("id", teamName);
@@ -94,4 +94,24 @@ function nullOpponent(){
 	opponentFighter = null;
 	opponentHPValue = null;
 	opponentCounterattackValue = null;
+};
+
+function resetPage(){
+	$("#fighters-container").html("");
+	$("#opponent-container").html("");
+	$("#JS-battle-arena-opponent-header").html("YOUR OPPONENT &darr;");
+	$("#JS-battle-arena-user-header").html("YOU &uarr;");
+	$("#user-container").html("");
+	$("#user-container-container").hide();
+	$("#opponent-container-container").hide();
+	$("#reset-btn").hide();
+	$("#attack-btn").removeClass("disabled");
+	$("#buttons-row").hide();
+	$("#lefthand-header").html("SELECT YOUR FIGHTER");
+	
+	
+	for (i = 0; i < fightersArray.length; i++){
+		var fighterRosterDisplayDiv = $("#fighters-container");
+		loadFighterProfile(i, fighterRosterDisplayDiv, "null");
+	};
 };

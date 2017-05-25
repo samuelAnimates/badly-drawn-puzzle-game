@@ -6,8 +6,20 @@
 	background-color: #3E84F3;
 }
 
+.bg-darkblue{
+	background-color: #2F63B6;
+}
+
 .bg-red{
 	background-color: #E63125;
+}
+
+.bg-darkyellow{
+	background-color: #BC8E03;
+}
+
+.bg-green{
+	background-color: #2CA24C;
 }
 
 .bg-yellow{
@@ -44,4 +56,12 @@
 
 .font-wt-bold{
 	font-size: bold;
+}
+
+.margin-bottom-20px{
+	margin-bottom: 20px;
+}
+
+.pad-10px{
+	padding: 10px;
 }
