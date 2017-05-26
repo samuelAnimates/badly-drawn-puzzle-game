@@ -63,7 +63,12 @@
 		<!-- Container for Battle Arena -->
 		<section class="bg-red col-xs-12 col-s-12 col-sm-offset-1 col-md-6 col-md-offset-1 col-lg-6 col-lg-offset-1" id="battle-arena">
 
-			<header class="font-40-px font-comicsans pad-10px row text-center" id="righthand-header">BATTLE ARENA</header>
+			<header class="font-comicsans pad-10px row text-center" id="righthand-header">
+			<span class="color-white pull-left" id="wins-span">W: 0</span>
+			<span class="font-40-px">BATTLE ARENA</span>
+			<span class="color-white pull-right" id="losses-span">L: 0</span>
+			</header>
+
 
 			<!-- Container for user-selected fighter profile-->
 			<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 text-center" id="user-container-container">	
@@ -72,7 +77,6 @@
 			</div>
 			
 			<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 pad-10px row" id="buttons-row">
-				<span class="color-white pull-left" id="wins-span">W: 0</span><span class="color-white pull-right" id="losses-span">L: 0</span>
 				<button type="button" class="btn btn-primary center-block font-comicsans" id="attack-btn">ATTACK!</button>
 				<button type="button" class="btn btn-success center-block font-comicsans" id="reset-btn">PLAY AGAIN</button>
 			</div>
@@ -91,127 +95,120 @@
 
 <script type="text/javascript">
 
+		//declare variables to keep track of user's stats
+		var userSelectionId = null;
+		var userFighter = null;
+		var userHPValue = null;
+		var userAttackValueRaise = null;
+		var userAttackValue = null;
+		var lossesCounterNum = 0;
+		var winsCounterNum = 0;
 
-	//display the roster of potential fighters in the fighters-container div
-	for (i = 0; i < fightersArray.length; i++){
-		var fighterRosterDisplayDiv = $("#fighters-container");
-		loadFighterProfile(i, fighterRosterDisplayDiv, "null");
-	}
+		//declare variables to keep track of current opponent stats
+		var opponentId = null;
+		var opponentFighter = null;
+		var opponentHPValue = null;
+		var opponentCounterattackValue = null;
+		var opponentsToBeatNumber = fightersArray.length;
 
-	//declare variables to keep track of user's stats
-	var userSelectionId = null;
-	var userFighter = null;
-	var userHPValue = null;
-	var userAttackValueRaise = null;
-	var userAttackValue = null;
-	var lossesCounterNum = 0;
-	var winsCounterNum = 0;
+		init();
 
-	//declare variables to keep track of current opponent stats
-	var opponentId = null;
-	var opponentFighter = null;
-	var opponentHPValue = null;
-	var opponentCounterattackValue = null;
-	var opponentsToBeatNumber = fightersArray.length;
 
-	$("#reset-btn").hide();
-	$("#buttons-row").hide();
-	$("#user-container-container").hide();
-	$("#opponent-container-container").hide();
-	$("#battle-arena").hide();
 
-	$("#fighters-container").on("click", ".JS-fighter-picture", function() {
+		$("#fighters-container").on("click", ".JS-fighter-picture", function() {
 
-		if(userSelectionId == null && opponentId == null){
-			
-			//Set the user's baseline fighter stats based on their selection
-			userSelectionId = parseInt($(this).attr("value"));
-			userFighter = fightersArray[userSelectionId];
-			userHPValue = userFighter.healthPoints;
-			userAttackValue = userFighter.attackPower;
-			userAttackValueRaise = userFighter.attackPower;
+			if(userSelectionId == null && opponentId == null){
+				
+				//Set the user's baseline fighter stats based on their selection
+				userSelectionId = parseInt($(this).attr("value"));
+				userFighter = fightersArray[userSelectionId];
+				userHPValue = userFighter.healthPoints;
+				userAttackValue = userFighter.attackPower;
+				userAttackValueRaise = userFighter.attackPower;
 
-			//Delete the user's selection from the roster and load it to the Battle Arena
-			$(this).closest(".fighter-profile").remove();
-			displayContainerUserSelection = $("#user-container");
-			loadFighterProfile(userSelectionId, displayContainerUserSelection, "user");
-			opponentsToBeatNumber = opponentsToBeatNumber - 1;
-			$("#lefthand-header").html("NOW: SELECT YOUR OPPONENT");
-			$("#battle-arena").show();
-			$("#user-container-container").show();
-
-		}
-
-		else if (userSelectionId !== null && opponentId == null){
-			
-			//Set the opponent's baseline fighter stats
-			opponentId = $(this).attr("value");
-			opponentFighter = fightersArray[opponentId];
-			opponentHPValue = opponentFighter.healthPoints;
-			opponentCounterattackValue = opponentFighter.counterattackPower;
-
-			displayContainerOpponentSelection = $("#opponent-container");
-
-			//remove user's selected opponent from the roster sections and display them in the Battle Arena
-			$(this).closest(".fighter-profile").remove();
-			loadFighterProfile(opponentId, displayContainerOpponentSelection, "opponent");
-			$("#opponent-container-container").show();
-			$("#lefthand-header").html("NOW: FIGHT!");
-			$("#buttons-row").show();
-		}
-		
-	});
-
-	$("#attack-btn").on("click", function(){
-		if(opponentHPValue > 0){
-			//change user's HP/Attack and opponent's HP, print user/opponent stats to the Battle Arena.
-			opponentHPValue = opponentHPValue - userAttackValue;
-			userHPValue = userHPValue - opponentCounterattackValue;
-			userAttackValue = userAttackValue + userAttackValueRaise;
-			$("#opponent.JS-stats-HP").html("HP: " + opponentHPValue);
-			$("#user.JS-stats-HP").html("HP: " + userHPValue);
-			$("#user.JS-stats-attack").html("Attack: " + userAttackValue);
-
-			//if this last attack has zeroed the opponent's HP, clear them from the Battle Arena and null all the opponent stats
-			if (opponentHPValue <= 0){
-				$("#opponent-container").html(" ");
-				$("#lefthand-header").html("NOW: SELECT YOUR NEXT OPPONENT");
+				//Delete the user's selection from the roster and load it to the Battle Arena
+				$(this).closest(".fighter-profile").remove();
+				displayContainerUserSelection = $("#user-container");
+				loadFighterProfile(userSelectionId, displayContainerUserSelection, "user");
 				opponentsToBeatNumber = opponentsToBeatNumber - 1;
-				nullOpponent();
+				$("#lefthand-header").html("NOW: SELECT YOUR OPPONENT");
+				$("#battle-arena").show();
+				$("#user-container-container").show();
 
-					//If there are no opponents left to beat, display message and disable attack button.
-					if(opponentsToBeatNumber == 0){
-						winsCounterNum++;
-						$("#attack-btn").addClass("disabled");
-						$("#reset-btn").show();
-						$("#JS-battle-arena-opponent-header").html("");
-						$("#wins-span").html("W: " + winsCounterNum);
-						$("#opponent-container").html("YAY, YOU WON!<br>TRY AGAIN?");
-					}
 			}
 
-			//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena, display message, and disable attack button.
-			if (userHPValue <= 0){
-				$("#JS-battle-arena-user-header").html("");
-				lossesCounterNum++;
-				$("#losses-span").html("L: " + winsCounterNum);
-				$("#user-container").html("OOPS. YOU LOST!<br>TRY AGAIN.");
-				$("#attack-btn").addClass("disabled");
-				$("#reset-btn").show();
+			else if (userSelectionId !== null && opponentId == null){
+				
+				//Set the opponent's baseline fighter stats
+				opponentId = parseInt($(this).attr("value"));
+				opponentFighter = fightersArray[opponentId];
+				opponentHPValue = opponentFighter.healthPoints;
+				opponentCounterattackValue = opponentFighter.counterattackPower;
+
+				displayContainerOpponentSelection = $("#opponent-container");
+
+				//remove user's selected opponent from the roster sections and display them in the Battle Arena
+				$(this).closest(".fighter-profile").remove();
+				loadFighterProfile(opponentId, displayContainerOpponentSelection, "opponent");
+				$("#opponent-container-container").show();
+				$("#lefthand-header").html("NOW: FIGHT!");
+				$("#buttons-row").show();
 			}
-		}
+			
+		});
 
-	});
+		$("#attack-btn").on("click", function(){
+			if(opponentHPValue > 0){
+				//change user's HP/Attack and opponent's HP, print user/opponent stats to the Battle Arena.
+				opponentHPValue = opponentHPValue - userAttackValue;
+				userHPValue = userHPValue - opponentCounterattackValue;
+				userAttackValue = userAttackValue + userAttackValueRaise;
+				$("#opponent.JS-stats-HP").html("HP: " + opponentHPValue);
+				$("#user.JS-stats-HP").html("HP: " + userHPValue);
+				$("#user.JS-stats-attack").html("Attack: " + userAttackValue);
 
-	$("#reset-btn").on("click", function() {
-		
-		resetPage();
-		nullUser();
-		nullOpponent();
+				//if this last attack has zeroed the opponent's HP, clear them from the Battle Arena and null all the opponent stats
+				if (opponentHPValue <= 0 && userHPValue > 0){
+					$("#opponent-container").html(" ");
+					$("#lefthand-header").html("NOW: SELECT YOUR NEXT OPPONENT");
+					opponentsToBeatNumber = opponentsToBeatNumber - 1;
+					nullOpponent();
 
-		opponentsToBeatNumber = fightersArray.length;
+						//If there are no opponents left to beat, display message and disable attack button.
+						if(opponentsToBeatNumber == 0){
+							winsCounterNum++;
+							$("#attack-btn").addClass("disabled");
+							$("#reset-btn").show();
+							$("#JS-battle-arena-opponent-header").html("");
+							$("#wins-span").html("W: " + winsCounterNum);
+							$("#opponent-container").html("YAY, YOU WON!<br>TRY AGAIN?");
+							$("#lefthand-header").html("YAY, YOU WON!");
+						}
+				}
 
-	});
+				//if this last counterattack has zeroed the user's HP, clear them from the Battle Arena, display message, and disable attack button.
+				if (userHPValue <= 0){
+					$("#JS-battle-arena-user-header").html("");
+					lossesCounterNum++;
+					$("#losses-span").html("L: " + lossesCounterNum);
+					$("#user-container").html("OOPS. YOU LOST!<br>TRY AGAIN.");
+					$("#attack-btn").addClass("disabled");
+					$("#reset-btn").show();
+				}
+			}
+
+		});
+
+		$("#reset-btn").on("click", function() {
+			
+			nullUser();
+			nullOpponent();
+			opponentsToBeatNumber = fightersArray.length;
+			resetPage();
+			init();
+
+
+		});
 
 </script>
 

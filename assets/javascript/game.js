@@ -2,15 +2,15 @@ var fighterOne = {
 	idNumber: 0,
 	fighterName: "Princess Poison",
 	healthPoints: 100,
-	attackPower: 10,
-	counterattackPower: 10,
+	attackPower: 25,
+	counterattackPower: 25,
 	fighterPicture: "./assets/images/princessPoison.png"
 };
 
 var fighterTwo = {
 	idNumber: 1,
 	fighterName: "Duke Dynamite",
-	healthPoints: 120,
+	healthPoints: 110,
 	attackPower: 20,
 	counterattackPower: 20,
 	fighterPicture: "./assets/images/dukeDynamite.png"
@@ -19,18 +19,18 @@ var fighterTwo = {
 var fighterThree = {
 	idNumber: 2,
 	fighterName: "Lord LaserEyes",
-	healthPoints: 140,
-	attackPower: 30,
-	counterattackPower: 30,
+	healthPoints: 120,
+	attackPower: 15,
+	counterattackPower: 15,
 	fighterPicture: "./assets/images/lordLaserEyes.png"
 };
 
 var fighterFour = {
 	idNumber: 3,
 	fighterName: "Empress ElectricShock",
-	healthPoints: 180,
-	attackPower: 40,
-	counterattackPower: 40,
+	healthPoints: 170,
+	attackPower: 10,
+	counterattackPower: 10,
 	fighterPicture: "./assets/images/empressElectricShock.png"
 };
 
@@ -102,16 +102,21 @@ function resetPage(){
 	$("#JS-battle-arena-opponent-header").html("YOUR OPPONENT &darr;");
 	$("#JS-battle-arena-user-header").html("YOU &uarr;");
 	$("#user-container").html("");
-	$("#user-container-container").hide();
-	$("#opponent-container-container").hide();
-	$("#reset-btn").hide();
 	$("#attack-btn").removeClass("disabled");
-	$("#buttons-row").hide();
 	$("#lefthand-header").html("SELECT YOUR FIGHTER");
 	
-	
+};
+
+function init(){
+	$("#reset-btn").hide();
+	$("#buttons-row").hide();
+	$("#user-container-container").hide();
+	$("#opponent-container-container").hide();
+	$("#battle-arena").hide();
+
+	//display the roster of potential fighters in the fighters-container div
 	for (i = 0; i < fightersArray.length; i++){
 		var fighterRosterDisplayDiv = $("#fighters-container");
 		loadFighterProfile(i, fighterRosterDisplayDiv, "null");
-	};
-};
+	}
+}
