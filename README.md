@@ -7,7 +7,7 @@ In-browser puzzle game: the player picks a character to play as, and has to figu
 
 ## Getting Started
 
-Simply download the repo and open the html page in a browser
+Simply download the repo and open the html page in a browser, or visit this [Github Page](https://smendez92.github.io/badly-drawn-puzzle-game/).
 
 ## Built With
 
